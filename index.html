@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6f7fb" />
+  <title>Taskflow — Personal Task Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Taskflow home"><span class="brand-mark">✓</span><span>taskflow</span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard"><span class="nav-icon">▦</span> Overview</button>
+        <button class="nav-item" data-view="tasks"><span class="nav-icon">☷</span> All tasks <span class="nav-count" id="allCount">0</span></button>
+        <button class="nav-item" data-view="calendar"><span class="nav-icon">▦</span> Calendar</button>
+      </nav>
+      <div class="sidebar-divider"></div>
+      <div class="workspace-label">TASK STATUS</div>
+      <nav class="nav">
+        <button class="nav-item" data-filter="pending"><span class="status-dot amber"></span> Pending</button>
+        <button class="nav-item" data-filter="completed"><span class="status-dot green"></span> Completed</button>
+        <button class="nav-item" data-filter="overdue"><span class="status-dot red"></span> Overdue</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card">
+          <div class="tip-icon">✦</div>
+          <strong>Small steps add up.</strong>
+          <p>Stay focused, make progress, and celebrate what you finish.</p>
+        </div>
+        <div class="profile"><div class="avatar">Y</div><div><strong>Your workspace</strong><small>Personal account</small></div><span class="profile-more">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Overview</strong></div>
+        <div class="top-actions">
+          <div class="today-label" id="todayLabel"></div>
+          <button class="primary-btn" id="newTaskBtn"><span>＋</span> New task</button>
+        </div>
+      </header>
+
+      <section class="page-content" id="dashboardView">
+        <div class="welcome-row">
+          <div><div class="eyebrow" id="greeting">YOUR PRODUCTIVITY</div><h1>Good things happen<br class="mobile-break"/> when you get things done.</h1><p class="subheading">Here's your progress at a glance. Keep the momentum going.</p></div>
+          <div class="date-pill"><span>◷</span><span id="fullDate"></span></div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total tasks</span><span class="stat-icon purple">☷</span></div><div class="stat-value" id="totalStat">0</div><div class="stat-foot">All tasks in your workspace</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Completed</span><span class="stat-icon green">✓</span></div><div class="stat-value" id="completedStat">0</div><div class="stat-foot"><span class="green-text" id="completedRate">0%</span> of all tasks</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Due today</span><span class="stat-icon blue">◷</span></div><div class="stat-value" id="todayStat">0</div><div class="stat-foot">Tasks scheduled for today</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Overdue</span><span class="stat-icon red">!</span></div><div class="stat-value" id="overdueStat">0</div><div class="stat-foot">Pending past their due date</div></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel progress-panel">
+            <div class="panel-heading"><div><h2>Your progress</h2><p>A snapshot of how you're doing</p></div><span class="soft-tag">All time</span></div>
+            <div class="progress-content"><div class="progress-ring" id="progressRing"><div class="ring-inner"><strong id="progressPercent">0%</strong><span>completed</span></div></div><div class="progress-breakdown"><div class="break-row"><span><i class="legend-dot green"></i>Completed</span><strong id="progressCompleted">0</strong></div><div class="break-row"><span><i class="legend-dot amber"></i>Pending</span><strong id="progressPending">0</strong></div><div class="break-row"><span><i class="legend-dot red"></i>Overdue</span><strong id="progressOverdue">0</strong></div></div></div>
+            <div class="progress-note" id="progressNote">Add your first task to start tracking your progress.</div>
+          </section>
+          <section class="panel focus-panel">
+            <div class="panel-heading"><div><h2>Coming up</h2><p>Your next tasks to focus on</p></div><button class="text-btn" data-go="tasks">View all →</button></div>
+            <div id="upcomingList" class="compact-list"></div>
+          </section>
+        </div>
+        <section class="panel recent-panel">
+          <div class="panel-heading"><div><h2>Today's focus</h2><p>Tasks with a due date of today</p></div><button class="text-btn" data-go="calendar">Open calendar →</button></div>
+          <div id="todayList" class="task-list"></div>
+        </section>
+      </section>
+
+      <section class="page-content hidden" id="tasksView">
+        <div class="section-title-row"><div><div class="eyebrow">STAY ON TOP OF IT</div><h1 id="tasksHeading">All tasks</h1><p class="subheading">Everything you need to get done, in one place.</p></div><button class="primary-btn" id="newTaskBtn2">＋ New task</button></div>
+        <div class="toolbar"><div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search tasks..." /></div><select id="sortSelect" aria-label="Sort tasks"><option value="date">Due date (earliest)</option><option value="priority">Priority (high first)</option><option value="created">Recently added</option></select></div>
+        <div class="filter-tabs"><button class="filter-tab selected" data-list-filter="all">All <span id="tabAll">0</span></button><button class="filter-tab" data-list-filter="pending">Pending <span id="tabPending">0</span></button><button class="filter-tab" data-list-filter="completed">Completed <span id="tabCompleted">0</span></button><button class="filter-tab" data-list-filter="overdue">Overdue <span id="tabOverdue">0</span></button></div>
+        <div class="panel task-panel"><div class="task-list" id="allTasksList"></div></div>
+      </section>
+
+      <section class="page-content hidden" id="calendarView">
+        <div class="section-title-row"><div><div class="eyebrow">PLAN AHEAD</div><h1>Calendar</h1><p class="subheading">See what's coming up and plan your time.</p></div><button class="primary-btn" id="newTaskBtn3">＋ New task</button></div>
+        <div class="calendar-layout">
+          <section class="panel calendar-panel">
+            <div class="calendar-head"><div><h2 id="monthTitle">Month Year</h2><p>Tasks by due date</p></div><div class="month-controls"><button id="prevMonth" aria-label="Previous month">‹</button><button id="todayMonth">Today</button><button id="nextMonth" aria-label="Next month">›</button></div></div>
+            <div class="calendar-grid weekday-row"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div class="calendar-grid" id="calendarDays"></div>
+            <div class="calendar-legend"><span><i class="legend-dot purple"></i>Has tasks</span><span><i class="legend-dot green"></i>Completed</span><span><i class="legend-dot red"></i>Overdue</span></div>
+          </section>
+          <section class="panel selected-day-panel"><div class="panel-heading"><div><h2 id="selectedDateTitle">Select a date</h2><p id="selectedDateSub">Your schedule for this day</p></div><span class="day-count" id="selectedDayCount">0</span></div><div id="selectedDayTasks" class="task-list"></div></section>
+        </div>
+      </section>
+      <footer class="footer">Made for focused days <span>·</span> Your tasks stay in this browser</footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="taskModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><div class="eyebrow">MAKE IT HAPPEN</div><h2 id="modalTitle">Create a task</h2></div><button class="icon-btn" id="closeModal" aria-label="Close">×</button></div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId" />
+        <label for="taskTitle">Task name <span>*</span></label><input id="taskTitle" maxlength="100" required placeholder="e.g. Prepare project proposal" />
+        <label for="taskDescription">Description <small>Optional</small></label><textarea id="taskDescription" rows="3" maxlength="500" placeholder="Add a few details..."></textarea>
+        <div class="form-row"><div><label for="taskDue">Due date <span>*</span></label><input id="taskDue" type="date" required /></div><div><label for="taskPriority">Priority</label><select id="taskPriority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div></div>
+        <div class="form-row"><div><label for="taskCategory">Category</label><select id="taskCategory"><option>Personal</option><option>Work</option><option>Learning</option><option>Health</option><option>Other</option></select></div><div><label for="taskStatus">Status</label><select id="taskStatus"><option value="pending">Pending</option><option value="completed">Completed</option></select></div></div>
+        <div class="modal-actions"><button type="button" class="secondary-btn" id="cancelModal">Cancel</button><button type="submit" class="primary-btn" id="saveTaskBtn">Save task</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
